@@ -1,0 +1,339 @@
+@import 'animations';
+
+.cart-container .overlay {
+	/* dark bg layer visible when the cart is open */
+	content: '';
+	position: fixed;
+	z-index: 1;
+	height: 100vh;
+	width: 100vw;
+	top: 0;
+	left: 12vh;
+	background: rgba(#000, .5);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity .4s, visibility .4s;
+}
+
+.cart-container.cart-open .overlay {
+	opacity: 1;
+	visibility: visible;
+}
+
+.cart {
+	position: fixed;
+	bottom: 0px;
+	// left: 12vh;
+	left: -440px;
+	transition: $transition;
+	-webkit-backface-visibility: hidden;
+	will-change: transform;
+	backface-visibility: hidden;
+}
+
+
+
+
+.cart {
+	/* cart content */
+	z-index: 2;
+	width: 90%;
+	max-width: 440px;
+	height: 100vh;
+	pointer-events: none;
+
+	.wrapper {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		z-index: 2;
+		overflow: hidden;
+		height: 72px;
+		width: 72px;
+
+		background: $color-3;
+		box-shadow: 0 4px 30px rgba(#000, .17);
+		pointer-events: auto;
+	}
+
+	header, footer {
+		position: absolute;
+		z-index: 2;
+		left: 0;
+		width: 100%;
+	}
+
+	header, .body {
+		opacity: 0;
+	}
+
+	header {
+		top: 0;
+		border-radius: 6px 6px 0 0;
+		padding: 0 1.4em;
+		height: 40px;
+		line-height: 40px;
+		background-color: $color-3;
+		transition: opacity .2s 0s;
+		border-bottom: 1px solid shade($color-3, 10%);
+		@include clearfix;
+	}
+
+	footer {
+		bottom: 0;
+		border-radius: 0 0 6px 6px;
+		box-shadow: 0 -2px 20px rgba(#000, .15);
+		background: $color-3;
+	}
+
+	h2 {
+		text-transform: uppercase;
+		display: inline-block;
+		font-size: 1.4rem;
+		font-weight: 700;
+		letter-spacing: .1em;
+	}
+
+	.undo {
+		float: right;
+		font-size: 1.2rem;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity .2s, visibility .2s;
+		color: tint($color-1, 40%);
+
+		a {
+			text-decoration: underline;
+			color: $color-1;
+
+			&:hover {
+				color: $color-2;
+			}
+		}
+
+		&.visible {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+
+	.checkout {
+		display: block;
+		height: 72px;
+		line-height: 72px;
+		background: $primary-color;
+		color: rgba($color-3, 0);
+		text-align: center;
+		font-size: 1.8rem;
+		font-weight: 600;
+		transition: all .2s 0s;
+
+		&:hover {
+			background: lighten($primary-color, 3%);
+		}
+
+		em {
+			position: relative;
+			display: inline-block;
+			transform: translateX(40px);
+			transition: transform 0s .2s;
+		}
+
+		em::after {
+			position: absolute;
+			@include center(y);
+			right: 0;
+			content: '';
+			height: 24px;
+			width: 24px;
+			//background: url(../img/icon-arrow-next.svg) no-repeat center center;
+			opacity: 0;
+			transition: opacity .2s;
+		}
+	}
+
+	.body {
+		position: relative;
+		z-index: 1;
+		height: calc(100% - 40px);
+		padding: 20px 0 10px;
+		margin: 40px 0 10px;
+		overflow: auto;
+		-webkit-overflow-scrolling: touch;
+		transition: opacity .2s;
+
+		ul {
+			overflow: hidden;
+			padding: 0 1.4em;
+			position: relative;
+			padding-bottom: 90px;
+		}
+
+		li {
+			position: relative;
+			@include clearfix;
+			opacity: 0;
+			transform: translateX(80px);
+			transition: opacity 0s .2s, transform 0s .2s;
+
+			&:not(:last-of-type) {
+				margin-bottom: 20px;
+			}
+
+			&.deleted {
+				/* this class is added to an item when it is removed form the cart */
+				position: absolute;
+				left: 500px;
+				width: calc(100% - 2.8em);
+				opacity: 0;
+				animation: item-slide-out .3s forwards;
+
+				&.undo-deleted {
+					/* used to reinsert an item deleted from the cart when user clicks 'Undo' */
+					animation: item-slide-in .3s forwards;
+				}
+			}
+
+			&.deleted + li {
+				animation: item-move-up-mobile .3s;
+				animation-fill-mode: forwards;
+			}
+
+			&.undo-deleted + li {
+				animation: item-move-down-mobile .3s;
+				animation-fill-mode: forwards;
+			}
+		}
+	}
+
+	.product-image {
+		display: inline-block;
+		float: left;
+		/* the image height determines the height of the list item - in this case height = width */
+		width: 50px;
+
+		img {
+			display: block;
+			width:100%;
+		}
+	}
+
+	.product-details {
+		position: relative;
+		display: inline-block;
+		float: right;
+		width: calc( 100% - 50px);
+		padding: 0.3em 0 0 0.5em;
+		@include clearfix;
+	}
+
+	h3, .price {
+		font-weight: bold;
+	}
+
+	h3 {
+		width: 70%;
+		float: left;
+		/* truncate title with dots if too long */
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+
+		a {
+			color: $color-1;
+
+			&:hover {
+				color: $color-2;
+			}
+		}
+	}
+
+	.price {
+		float: right;
+		width: 30%;
+		text-align: right;
+	}
+
+	.actions {
+		font-size: 1.4rem;
+		height: 1.6em;
+		line-height: 1.6em;
+		@include clearfix;
+	}
+
+	.delete-item, .quantity {
+		float: left;
+		color: tint($color-1, 40%);
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+	}
+
+	.delete-item {
+		margin-right: 1em;
+
+		&:hover {
+			color: $color-5;
+		}
+	}
+
+	.cart-open & .wrapper {
+		height: 100%;
+		width: 100%;
+		transition-delay: 0s;
+	}
+
+	.cart-open & header,
+	.cart-open & .body {
+		opacity: 1;
+	}
+
+	.cart-open & header {
+		transition: opacity .2s .2s;
+	}
+
+	.cart-open & {
+		left: 12vh;
+		transition: $transition;
+	}
+
+	.cart-open & .body {
+		transition: opacity 0s;
+
+		li {
+			transition: transform .3s .2s, opacity .3s .2s;
+			opacity: 1;
+			transform: translateX(0);
+
+			&:nth-of-type(2) {
+				transition-duration: .4s;
+			}
+
+			&:nth-of-type(3) {
+				transition-duration: .5s;
+			}
+
+			&:nth-of-type(4),
+			&:nth-of-type(5) {
+				transition-duration: .55s;
+			}
+		}
+	}
+
+	.cart-open & .checkout {
+		color: $color-3;
+		transition: color .2s .3s;
+
+		em {
+			transform: translateX(0);
+			transition: transform .2s .3s, padding .2s 0s;
+		}
+
+		&:hover em {
+			padding-right: 30px;
+
+			&::after {
+				opacity: 1;
+			}
+		}
+	}
+}

@@ -1,0 +1,62 @@
+// Colors
+// ==================================================
+$primary-color: 			#0023ff;  //b2b6cc
+$primary-color-dark: 		darken($primary-color, 3%);
+$primary-color-light: 		lighten($primary-color, 3%);
+$primary-color-opacity: 	rgba($primary-color, 0.7);
+$primary-color-opacity2: 	rgba($primary-color, 0.3);
+
+$secondary-color: 			#FFFFFF;
+$secondary-color-dark: 		darken($secondary-color, 3%);
+$secondary-color-light:     lighten($secondary-color, 3%);
+$secondary-color-opacity: 	rgba($secondary-color, 0.7);
+$secondary-color-opacity2: 	rgba($secondary-color, 0.3);
+
+$black:						#242322;
+$black-opacity:				rgba($black, 0.7);
+
+$error: 					#FF584E;
+
+$transition:                all .2s ease-in;
+
+//font
+// ==================================================
+$font-family: 				'Lato', Tahoma, Arial;
+$font-size-h1: 				1.875rem;  //30px;
+$font-size-h2: 				1.25rem;   // 20px;
+$font-size-h3: 				0.9375rem; //15px;
+$font-size:    				0.813rem;   //13px;
+$line-height:    			1.125rem;   //18px;
+
+
+// Burger
+// ==================================================
+$hamburger-padding-x                       : 15px !default;
+$hamburger-padding-y                       : 15px !default;
+$hamburger-layer-width                     : 40px !default;
+$hamburger-layer-height                    : 2px !default;
+$hamburger-layer-spacing                   : 7px !default;
+$hamburger-layer-color                     : $primary-color !default;
+$hamburger-layer-color-open                : $primary-color !default;
+$hamburger-layer-border-radius             : 0px !default;
+$hamburger-hover-opacity                   : 0.7 !default;
+$hamburger-hover-transition-duration       : 0.15s !default;
+$hamburger-hover-transition-timing-function: linear !default;
+// To use CSS filters as the hover effect instead of opacity,
+// set $hamburger-hover-use-filter as true and
+// change the value of $hamburger-hover-filter accordingly.
+$hamburger-hover-use-filter: false !default;
+$hamburger-hover-filter    : opacity(50%) !default;
+
+
+// TRANSITION
+// =================================================
+
+$easeInOutQuart: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+
+// colors
+$color-1: #2b3e51; // Pickled Bluewood
+$color-2: #2c97de; // Curious Blue
+$color-3: #ffffff; // White
+$color-4: #ecf0f1; // Porcelain
+$color-5: #e94b35; // Cinnabar

@@ -12,7 +12,7 @@ def getpageplace(request,pk):
     try:
         content_list = []
         pages = Page.objects.filter(place=pk)
-        for page in pages :
+        for page in pages   :
             content = Content.objects.filter(page=page.id)
             content_list.append(serializers.serialize('json', content))
     except Page.DoesNotExist:

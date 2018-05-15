@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^place/(?P<pk>[0-9]+)/pages/infos$', views.getpageplace, name='getpageplace'),
+    url(r'^place/(?P<pk>[0-9]+)/pages/$', views.getpageplace, name='getpageplace'),
 ]

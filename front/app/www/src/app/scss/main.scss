@@ -1,0 +1,23 @@
+@import 'vars';
+@import 'mixin';
+@import 'reset';
+@import 'nav';
+@import 'store';
+@import 'cart';
+@import 'product';
+
+@import url(https://fonts.googleapis.com/css?family=Lato:700,400,300italic,300,100);
+
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
+  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
+  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
+}
+html, body {
+  font-size: 16px;
+  font-family: $font-family;
+}

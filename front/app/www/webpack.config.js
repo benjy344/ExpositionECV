@@ -1,7 +1,7 @@
 let webpack 	= require('webpack')
 let path    	= require('path')
 
-let BUILD_DIR 	= path.resolve(__dirname, 'www/dist')
+let BUILD_DIR 	= path.resolve(__dirname, 'dist')
 let APP_DIR 	= path.resolve(__dirname, 'src/app')
 
 let config = {
@@ -9,7 +9,7 @@ let config = {
     output: {
         path: BUILD_DIR,
         filename: 'bundle.js',
-        publicPath: '/www/dist/'
+        publicPath: '/dist/'
     },
     resolve: {
         extensions: ['.js', '.jsx', '.scss']

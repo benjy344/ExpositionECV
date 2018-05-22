@@ -13,10 +13,12 @@ def index(request):
 def getallartwortks(request):
     try:
         artwortk = Artwortk.objects.all()
-        artwortk_serialized = serializers.serialize('json', artwortk)
+        artwortk_serialized = [ i.__dict__ for i in artwortk]
+        for e in artwortk_serialized:
+            e['_state'] = ""
     except Artwortk.DoesNotExist:
         raise Http404
-    return JsonResponse(artwortk_serialized, safe=False)
+    return JsonResponse({'result': artwortk_serialized}, safe=False)
 
 
 def getartwortk(request,pk):

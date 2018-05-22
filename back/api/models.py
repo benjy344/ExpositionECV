@@ -24,7 +24,7 @@ class Artwortk(models.Model):
         db_column='id_room'
     )
     author = models.ForeignKey(
-        'author',
+        'Author',
         on_delete=models.CASCADE,
         db_column='id_author'
     )

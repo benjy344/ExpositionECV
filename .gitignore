@@ -57,5 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
-__pycache__/*
+back/ExpositionApi/__pycache__/*
 migrations/*

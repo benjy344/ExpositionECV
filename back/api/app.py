@@ -19,3 +19,7 @@ db=SQLAlchemy(app)
 from flask.ext.login import LoginManager
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
+
+
+from flask_cors import CORS
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})

@@ -25,7 +25,7 @@ SECRET_KEY = 'ah$*1^t7z*aseyy$yps0#gt111&_70-+0nkyvxfvvm7-fcaawn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pitipoulpe.freeboxos.fr']
+ALLOWED_HOSTS = ['pitipoulpe.freeboxos.fr','127.0.0.1']
 
 
 # Application definition

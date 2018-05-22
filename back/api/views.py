@@ -85,7 +85,7 @@ def getartwortkbyroom(request,pk):
         artwortks = serializers.serialize('json', artwortks)
     except Artwortk.DoesNotExist:
         raise Http404
-    return JsonResponse(artwortks, safe=False)
+    return JsonResponse({'ae':artwortks}, safe=False)
 
 
 def getpageplace(request,pk):

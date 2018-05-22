@@ -1,7 +1,9 @@
 from django.core import serializers
 from django.http import Http404, HttpResponse, JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import Page, Content, Artwortk, Place, Room, Author
+from .models import Page, Content, Artwortk, Place, Room, Author, Like
 
 
 def index(request):
@@ -148,3 +150,42 @@ def getallartwortkbyparams(request):
     else:
         raise Http404
     return JsonResponse(arts, safe=False)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+def addlike(request,pk):
+    if request.method == 'POST':
+        try:
+            token = request.POST.get("token")
+            art = Artwortk.objects.filter(id=pk)
+
+            like = Like.objects.filter(token=token).filter(artwortk=pk)
+            if like:
+                raise Http404
+            else:
+                newlike = Like(token=token, artwortk=art[0])
+                newlike.save()
+        except Artwortk.DoesNotExist:
+            raise Http404
+    else:
+        raise Http404
+    return JsonResponse("OK", safe=False)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+def removelike(request,pk):
+    if request.method == 'POST':
+        try:
+            token = request.POST.get("token")
+            art = Artwortk.objects.filter(id=pk)
+
+            like = Like.objects.filter(token=token).filter(artwortk=pk)
+            if like:
+                like.delete()
+            else:
+                raise Http404
+        except Artwortk.DoesNotExist:
+            raise Http404
+    else:
+        raise Http404
+    return JsonResponse("OK", safe=False)

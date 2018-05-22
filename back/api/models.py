@@ -141,3 +141,16 @@ class Room(models.Model):
     class Meta:
         managed = False
         db_table = 'Room'
+
+
+class Like(models.Model):
+    token = models.TextField(blank=False, null=False)
+    artwortk = models.ForeignKey(
+        'Artwortk',
+        on_delete=models.CASCADE,
+        db_column='id_artwortk'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Like'

@@ -59,3 +59,4 @@ typings/
 
 back/ExpositionApi/__pycache__/*
 migrations/*
+*.pyc

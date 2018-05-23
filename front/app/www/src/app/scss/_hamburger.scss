@@ -68,6 +68,7 @@
   }
 
   &::before {
+    width: 25px;
     top: ($hamburger-layer-spacing + $hamburger-layer-height) * -1;
   }
 

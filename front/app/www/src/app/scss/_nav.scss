@@ -6,7 +6,7 @@ nav {
     height:100vh;
     position:fixed;
     top:0;
-    right:0;
+    left:0;
     transition: $transition;
     z-index: 999;
     transition: width 0s 0.7s;
@@ -15,21 +15,20 @@ nav {
         width: 100vw;
         .menu-slider__content {
             width: 38vh;
-            right: -3.8vh;
+            left: -3.8vh;
             transition: $transition;
 
         }
     }
 
     .menu-slider__content {
-        background-color: #fff;
+        background-color: $primary-color;
         position: absolute;
-        right: -41.8vh;
+        left: -41.8vh;
         width: 38vh;
         height: 100%;
         margin: 0;
-        padding: 0;
-        padding-right: 3.8vh;
+        padding: 0 3.8vh 0 0;
         box-shadow: 0px 0px 4vh 0px rgba(219, 219, 219, 0.5);
         transition: $transition;
 
@@ -131,14 +130,13 @@ nav {
 
 .hamburger {
     position: fixed;
-    right: 20px;
+    left: 20px;
     top: 20px;
     z-index: 9999;
     height: 8vh;
     width: 8vh;
-    background-color: #fff;
+    background-color: transparent;
     border-radius: 100%;
-    box-shadow: 0px 0px 4vh 0px rgba(219, 219, 219, 0.5);
     cursor: pointer;
 
 
@@ -176,6 +174,8 @@ nav {
 
             &::before {
                 top: 0;
+                width: $hamburger-layer-width;
+                border-radius: 3px;
                 transform: rotate(-90deg);
                 transition: top 0.1s 0.16s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
                 transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);

@@ -1,6 +1,6 @@
 // Colors
 // ==================================================
-$primary-color: 			#0023ff;  //b2b6cc
+$primary-color: 			#273037;
 $primary-color-dark: 		darken($primary-color, 3%);
 $primary-color-light: 		lighten($primary-color, 3%);
 $primary-color-opacity: 	rgba($primary-color, 0.7);
@@ -33,12 +33,12 @@ $line-height:    			1.125rem;   //18px;
 // ==================================================
 $hamburger-padding-x                       : 15px !default;
 $hamburger-padding-y                       : 15px !default;
-$hamburger-layer-width                     : 40px !default;
-$hamburger-layer-height                    : 2px !default;
+$hamburger-layer-width                     : 33px !default;
+$hamburger-layer-height                    : 4px !default;
 $hamburger-layer-spacing                   : 7px !default;
-$hamburger-layer-color                     : $primary-color !default;
-$hamburger-layer-color-open                : $primary-color !default;
-$hamburger-layer-border-radius             : 0px !default;
+$hamburger-layer-color                     : #cdcdcd !default;
+$hamburger-layer-color-open                : #fff !default;
+$hamburger-layer-border-radius             : 3px !default;
 $hamburger-hover-opacity                   : 0.7 !default;
 $hamburger-hover-transition-duration       : 0.15s !default;
 $hamburger-hover-transition-timing-function: linear !default;

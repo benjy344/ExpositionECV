@@ -1,4 +1,4 @@
-export function getPlaceData(id) {
+export function getPlaceData(id=1) {
 
-    fetch()
+    return fetch(`http://pitipoulpe.freeboxos.fr/api/places/${id}`)
 }

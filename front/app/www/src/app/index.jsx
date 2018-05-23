@@ -10,6 +10,8 @@ import App 		         from './components/App'
 import Nav 		         from './components/Nav'
 import About 		     from './components/About'
 
+import './scss/main.scss'
+import Artwork from "./components/Artwork";
 
 const renderApp = () => {
     ReactDom.render(
@@ -21,6 +23,7 @@ const renderApp = () => {
                             <Nav />
                             <Route exact path="/" component={App}/>
                             <Route path="/about" component={About}/>
+                            <Route path="/artwork/:id" component={Artwork}/>
                         </div>
                     </ConnectedRouter>
                 </div>

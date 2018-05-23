@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Page, Content, Artwortk, Place, Room, Author, Like
+from .models import Page, Content, artwork, Place, Room, Author, Like
 from .utils import to_json
 
 
@@ -11,20 +11,20 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 
-def getallartwortks(request):
+def getallartworks(request):
     try:
-        artwortk = Artwortk.objects.all()
-        json = to_json(artwortk, request.path)
-    except Artwortk.DoesNotExist:
+        artwork = artwork.objects.all()
+        json = to_json(artwork, request.path)
+    except artwork.DoesNotExist:
         json = to_json([], request.path, 'Artwork not found', '')
     return JsonResponse(json, safe=False)
 
 
-def getartwortk(request, pk):
+def getartwork(request, pk):
     try:
-        artwortk = Artwortk.objects.filter(id=pk)
-        json = to_json(artwortk, request.path)
-    except Artwortk.DoesNotExist:
+        artwork = artwork.objects.filter(id=pk)
+        json = to_json(artwork, request.path)
+    except artwork.DoesNotExist:
         json = to_json([], request.path, 'Artwork not found', '')
     return JsonResponse(json, safe=False)
 
@@ -79,11 +79,11 @@ def getroom(request, pk):
     return JsonResponse(json, safe=False)
 
 
-def getartwortkbyroom(request, pk):
+def getartworkbyroom(request, pk):
     try:
-        artwortks = Artwortk.objects.filter(room=pk)
-        json = to_json(artwortks, request.path)
-    except Artwortk.DoesNotExist:
+        artworks = artwork.objects.filter(room=pk)
+        json = to_json(artworks, request.path)
+    except artwork.DoesNotExist:
         json = to_json([], request.path, 'Artworks not found', '')
     return JsonResponse(json, safe=False)
 
@@ -130,22 +130,22 @@ def getpageplacehome(request, pk):
     return JsonResponse(json, safe=False)
 
 
-def getallartwortkbyparams(request):
+def getallartworkbyparams(request):
     arts = []
     if request.method == 'GET':
         try:
             param = request.GET.get("param")
             value = request.GET.get("value")
             if param == "author":
-                arts = Artwortk.objects.filter(author=value)
+                arts = artwork.objects.filter(author=value)
                 arts = serializers.serialize('json', arts)
             elif param == "name":
-                arts = Artwortk.objects.filter(name=value)
+                arts = artwork.objects.filter(name=value)
                 arts = serializers.serialize('json', arts)
             elif param == "room":
-                arts = Artwortk.objects.filter(room=value)
+                arts = artwork.objects.filter(room=value)
                 arts = serializers.serialize('json', arts)
-        except Artwortk.DoesNotExist:
+        except artwork.DoesNotExist:
             raise Http404
     else:
         raise Http404
@@ -157,13 +157,13 @@ def addlike(request, pk):
     if request.method == 'POST':
         try:
             token = request.POST.get("token")
-            art = Artwortk.objects.filter(id=pk)
+            art = artwork.objects.filter(id=pk)
 
-            like = Like.objects.filter(token=token).filter(artwortk=pk)
+            like = Like.objects.filter(token=token).filter(artwork=pk)
             if like:
                 json = to_json([], request.path, 'Already liked', '500')
             else:
-                newlike = Like(token=token, artwortk=art[0])
+                newlike = Like(token=token, artwork=art[0])
                 newlike.save()
                 json = {'results': 'OK',
                         'error': {
@@ -171,7 +171,7 @@ def addlike(request, pk):
                             'statusCode': ''
                         },
                         'url': ''}
-        except Artwortk.DoesNotExist:
+        except artwork.DoesNotExist:
             json = to_json([], request.path, 'Artwork not found', '404')
     else:
         json = to_json([], request.path, 'Bad method please use POST', '400')
@@ -183,8 +183,8 @@ def removelike(request, pk):
     if request.method == 'POST':
         try:
             token = request.POST.get("token")
-            art = Artwortk.objects.filter(id=pk)
-            like = Like.objects.filter(token=token).filter(artwortk=pk)
+            art = artwork.objects.filter(id=pk)
+            like = Like.objects.filter(token=token).filter(artwork=pk)
             if like:
                 like.delete()
                 json = {'results': 'OK',
@@ -195,7 +195,7 @@ def removelike(request, pk):
                         'url': ''}
             else:
                 json = to_json([], request.path, 'Like not found', '404')
-        except Artwortk.DoesNotExist:
+        except artwork.DoesNotExist:
             json = to_json([], request.path, 'Artwork not found', '404')
     else:
         json = to_json([], request.path, 'Bad method please use POST', '400')

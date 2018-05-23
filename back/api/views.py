@@ -4,6 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Page, Content, Artwortk, Place, Room, Author, Like
+from .utils import to_json
 
 
 def index(request):
@@ -13,123 +14,120 @@ def index(request):
 def getallartwortks(request):
     try:
         artwortk = Artwortk.objects.all()
-        artwortk_serialized = [ i.__dict__ for i in artwortk]
-        for e in artwortk_serialized:
-            e['_state'] = ""
+        json = to_json(artwortk, request.path)
     except Artwortk.DoesNotExist:
-        raise Http404
-    return JsonResponse({'result': artwortk_serialized}, safe=False)
+        json = to_json([], request.path, 'Artwork not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getartwortk(request,pk):
+def getartwortk(request, pk):
     try:
         artwortk = Artwortk.objects.filter(id=pk)
-        artwortk_serialized = serializers.serialize('json', artwortk)
+        json = to_json(artwortk, request.path)
     except Artwortk.DoesNotExist:
-        raise Http404
-    return JsonResponse(artwortk_serialized, safe=False)
+        json = to_json([], request.path, 'Artwork not found', '')
+    return JsonResponse(json, safe=False)
 
 
 def getallplaces(request):
     try:
-        place = Place.objects.all()
-        place_serialized = serializers.serialize('json', place)
+        places = Place.objects.all()
+        json = to_json(places, request.path)
     except Place.DoesNotExist:
-        raise Http404
-    return JsonResponse(place_serialized, safe=False)
+        json = to_json([], request.path, 'Place not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getplace(request,pk):
+def getplace(request, pk):
     try:
         place = Place.objects.filter(id=pk)
-        place_serialized = serializers.serialize('json', place)
     except Place.DoesNotExist:
-        raise Http404
-    return JsonResponse(place_serialized, safe=False)
+        json = to_json([], request.path, 'Place not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getplacemap(request,pk):
+def getplacemap(request, pk):
+    json = {}
     try:
-        content_list = []
         pages = Page.objects.filter(place=pk)
         for page in pages :
             content = Content.objects.filter(page=page.id)
             if content[0].type == 'map':
-                content_list.append(serializers.serialize('json', content))
+                json = to_json(content, request.path)
     except Page.DoesNotExist:
-        raise Http404
+        json = to_json([], request.path, 'Page not found', '')
     except Content.DoesNotExist:
-        raise Http404
-    return JsonResponse(content_list, safe=False)
+        json = to_json([], request.path, 'Content not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getallroomsbyplace(request,pk):
+def getallroomsbyplace(request, pk):
     try:
         rooms = Room.objects.filter(place=pk)
-        rooms = serializers.serialize('json', rooms)
+        json = to_json(rooms, request.path)
     except Room.DoesNotExist:
-        raise Http404
-    return JsonResponse(rooms, safe=False)
+        json = to_json([], request.path, 'Rooms not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getroom(request,pk):
+def getroom(request, pk):
     try:
         rooms = Room.objects.filter(id=pk)
-        rooms = serializers.serialize('json', rooms)
+        json = to_json(rooms, request.path)
     except Room.DoesNotExist:
-        raise Http404
-    return JsonResponse(rooms, safe=False)
+        json = to_json([], request.path, 'Rooms not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getartwortkbyroom(request,pk):
+def getartwortkbyroom(request, pk):
     try:
         artwortks = Artwortk.objects.filter(room=pk)
-        artwortks = serializers.serialize('json', artwortks)
+        json = to_json(artwortks, request.path)
     except Artwortk.DoesNotExist:
-        raise Http404
-    return JsonResponse({'ae':artwortks}, safe=False)
+        json = to_json([], request.path, 'Artworks not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getpageplace(request,pk):
+def getpageplace(request, pk):
+    json = {}
     try:
-        content_list = []
         pages = Page.objects.filter(place=pk)
         for page in pages:
             content = Content.objects.filter(page=page.id)
-            content_list.append(serializers.serialize('json', content))
+            json = to_json(content, request.path)
     except Page.DoesNotExist:
-        raise Http404
+        json = to_json([], request.path, 'Page not found', '')
     except Content.DoesNotExist:
-        raise Http404
-    return JsonResponse(content_list, safe=False)
+        json = to_json([], request.path, 'Content not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getpageplaceinfos(request,pk):
+def getpageplaceinfos(request, pk):
+    json = {}
     try:
-        content_list = []
         pages = Page.objects.filter(place=pk).filter(name="Infos pratiques")
         for page in pages:
             content = Content.objects.filter(page=page.id).filter(page=2)
-            content_list.append(serializers.serialize('json', content))
+            json = to_json(content, request.path)
     except Page.DoesNotExist:
-        raise Http404
+        json = to_json([], request.path, 'Page not found', '')
     except Content.DoesNotExist:
-        raise Http404
-    return JsonResponse(content_list, safe=False)
+        json = to_json([], request.path, 'Content not found', '')
+    return JsonResponse(json, safe=False)
 
 
-def getpageplacehome(request,pk):
+def getpageplacehome(request, pk):
+    json = {}
     try:
-        content_list = []
         pages = Page.objects.filter(place=pk).filter(name="Home")
         for page in pages:
             content = Content.objects.filter(page=page.id)
-            content_list.append(serializers.serialize('json', content))
+            json = to_json(content, request.path)
     except Page.DoesNotExist:
-        raise Http404
+        json = to_json([], request.path, 'Page not found', '')
     except Content.DoesNotExist:
-        raise Http404
-    return JsonResponse(content_list, safe=False)
+        json = to_json([], request.path, 'Page not found', '')
+    return JsonResponse(json, safe=False)
 
 
 def getallartwortkbyparams(request):
@@ -155,7 +153,7 @@ def getallartwortkbyparams(request):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-def addlike(request,pk):
+def addlike(request, pk):
     if request.method == 'POST':
         try:
             token = request.POST.get("token")
@@ -163,31 +161,42 @@ def addlike(request,pk):
 
             like = Like.objects.filter(token=token).filter(artwortk=pk)
             if like:
-                raise Http404
+                json = to_json([], request.path, 'Already liked', '500')
             else:
                 newlike = Like(token=token, artwortk=art[0])
                 newlike.save()
+                json = {'results': 'OK',
+                        'error': {
+                            'errorMessage': '',
+                            'statusCode': ''
+                        },
+                        'url': ''}
         except Artwortk.DoesNotExist:
-            raise Http404
+            json = to_json([], request.path, 'Artwork not found', '404')
     else:
-        raise Http404
-    return JsonResponse("OK", safe=False)
+        json = to_json([], request.path, 'Bad method please use POST', '400')
+    return JsonResponse(json, safe=False)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-def removelike(request,pk):
+def removelike(request, pk):
     if request.method == 'POST':
         try:
             token = request.POST.get("token")
             art = Artwortk.objects.filter(id=pk)
-
             like = Like.objects.filter(token=token).filter(artwortk=pk)
             if like:
                 like.delete()
+                json = {'results': 'OK',
+                        'error': {
+                            'errorMessage': '',
+                            'statusCode': ''
+                        },
+                        'url': ''}
             else:
-                raise Http404
+                json = to_json([], request.path, 'Like not found', '404')
         except Artwortk.DoesNotExist:
-            raise Http404
+            json = to_json([], request.path, 'Artwork not found', '404')
     else:
-        raise Http404
-    return JsonResponse("OK", safe=False)
+        json = to_json([], request.path, 'Bad method please use POST', '400')
+    return JsonResponse(json, safe=False)

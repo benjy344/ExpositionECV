@@ -14,10 +14,10 @@ def index(request):
 
 def getallartworks(request):
     try:
-        artwork = artwork.objects.all()
-        json = to_json(artwork, request.path)
-    except artwork.DoesNotExist:
-        json = to_json([], request.path, 'Artwork not found', '')
+        arts = artwork.objects.all()
+        json = to_json(arts, request.path)
+    except arts.DoesNotExist:
+        json = to_json([], request.path, 'Artworks not found...', '')
     return JsonResponse(json, safe=False)
 
 

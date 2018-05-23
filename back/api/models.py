@@ -14,7 +14,7 @@ def qrcode_location(filename):
     return 'qrcode/%s' % (filename)
 
 
-class Artwortk(models.Model):
+class artwork(models.Model):
     name = models.TextField()
     desc = models.TextField()
     img = models.ImageField()
@@ -24,7 +24,7 @@ class Artwortk(models.Model):
         db_column='id_room'
     )
     author = models.ForeignKey(
-        'author',
+        'Author',
         on_delete=models.CASCADE,
         db_column='id_author'
     )
@@ -61,7 +61,7 @@ class Artwortk(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'Artwortk'
+        db_table = 'artwork'
 
 
 class Author(models.Model):
@@ -141,3 +141,16 @@ class Room(models.Model):
     class Meta:
         managed = False
         db_table = 'Room'
+
+
+class Like(models.Model):
+    token = models.TextField(blank=False, null=False)
+    artwork = models.ForeignKey(
+        'artwork',
+        on_delete=models.CASCADE,
+        db_column='id_artwork'
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'Like'

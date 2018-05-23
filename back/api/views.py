@@ -1,4 +1,5 @@
 from django.core import serializers
+from django.core.exceptions import FieldDoesNotExist
 from django.http import Http404, HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -124,32 +125,27 @@ def getpageplacehome(request, pk):
             content = Content.objects.filter(page=page.id)
             json = to_json(content, request.path)
     except Page.DoesNotExist:
-        json = to_json([], request.path, 'Page not found', '')
+        json = to_json([], request.path, 'Page not found', '404')
     except Content.DoesNotExist:
-        json = to_json([], request.path, 'Page not found', '')
+        json = to_json([], request.path, 'Content not found', '404')
     return JsonResponse(json, safe=False)
 
 
 def getallartworkbyparams(request):
-    arts = []
+    json = {}
     if request.method == 'GET':
         try:
-            param = request.GET.get("param")
-            value = request.GET.get("value")
-            if param == "author":
-                arts = artwork.objects.filter(author=value)
-                arts = serializers.serialize('json', arts)
-            elif param == "name":
-                arts = artwork.objects.filter(name=value)
-                arts = serializers.serialize('json', arts)
-            elif param == "room":
-                arts = artwork.objects.filter(room=value)
-                arts = serializers.serialize('json', arts)
+            param = list(request.GET.keys())[0]
+            artwork._meta.get_field(param)
+            arts = artwork.objects.filter(** {param: request.GET.get(param)})
+            json = to_json(arts, request.path)
         except artwork.DoesNotExist:
-            raise Http404
+            json = to_json([], request.path, 'artwork not found', '404')
+        except FieldDoesNotExist:
+            json = to_json([], request.path, 'Field not exist', '500')
     else:
-        raise Http404
-    return JsonResponse(arts, safe=False)
+        json = to_json([], request.path, 'Bad method please use GET', '400')
+    return JsonResponse(json, safe=False)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -158,7 +154,6 @@ def addlike(request, pk):
         try:
             token = request.POST.get("token")
             art = artwork.objects.filter(id=pk)
-
             like = Like.objects.filter(token=token).filter(artwork=pk)
             if like:
                 json = to_json([], request.path, 'Already liked', '500')

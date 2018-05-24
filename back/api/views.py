@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Page, Content, artwork, Place, Room, Author, Like
+from .models import Page, Content, Artwork, Place, Room, Author, Like
 from .utils import to_json
 
 
@@ -14,18 +14,18 @@ def index(request):
 
 def getallartworks(request):
     try:
-        arts = artwork.objects.all()
+        arts = Artwork.objects.all()
         json = to_json(arts, request.path)
-    except arts.DoesNotExist:
+    except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artworks not found...', '')
     return JsonResponse(json, safe=False)
 
 
 def getartwork(request, pk):
     try:
-        artwork = artwork.objects.filter(id=pk)
-        json = to_json(artwork, request.path)
-    except artwork.DoesNotExist:
+        art = Artwork.objects.filter(id=pk)
+        json = to_json(art, request.path)
+    except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artwork not found', '')
     return JsonResponse(json, safe=False)
 
@@ -82,9 +82,9 @@ def getroom(request, pk):
 
 def getartworkbyroom(request, pk):
     try:
-        artworks = artwork.objects.filter(room=pk)
+        artworks = Artwork.objects.filter(room=pk)
         json = to_json(artworks, request.path)
-    except artwork.DoesNotExist:
+    except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artworks not found', '')
     return JsonResponse(json, safe=False)
 
@@ -136,10 +136,10 @@ def getallartworkbyparams(request):
     if request.method == 'GET':
         try:
             param = list(request.GET.keys())[0]
-            artwork._meta.get_field(param)
-            arts = artwork.objects.filter(** {param: request.GET.get(param)})
+            Artwork._meta.get_field(param)
+            arts = Artwork.objects.filter(** {param: request.GET.get(param)})
             json = to_json(arts, request.path)
-        except artwork.DoesNotExist:
+        except Artwork.DoesNotExist:
             json = to_json([], request.path, 'artwork not found', '404')
         except FieldDoesNotExist:
             json = to_json([], request.path, 'Field not exist', '500')
@@ -153,20 +153,24 @@ def addlike(request, pk):
     if request.method == 'POST':
         try:
             token = request.POST.get("token")
-            art = artwork.objects.filter(id=pk)
+            if token is None:
+                json = to_json([], request.path, 'Bad Token', '500')
+                return JsonResponse(json, safe=False)
+            art = Artwork.objects.filter(id=pk)
             like = Like.objects.filter(token=token).filter(artwork=pk)
             if like:
                 json = to_json([], request.path, 'Already liked', '500')
             else:
-                newlike = Like(token=token, artwork=art[0])
-                newlike.save()
-                json = {'results': 'OK',
-                        'error': {
-                            'errorMessage': '',
-                            'statusCode': ''
-                        },
-                        'url': ''}
-        except artwork.DoesNotExist:
+                if art:
+                    newlike = Like(token=token, artwork=art[0])
+                    newlike.save()
+                    json = {'results': 'OK',
+                            'error': {
+                                'errorMessage': '',
+                                'statusCode': ''
+                            },
+                            'url': ''}
+        except Artwork.DoesNotExist:
             json = to_json([], request.path, 'Artwork not found', '404')
     else:
         json = to_json([], request.path, 'Bad method please use POST', '400')
@@ -178,7 +182,10 @@ def removelike(request, pk):
     if request.method == 'POST':
         try:
             token = request.POST.get("token")
-            art = artwork.objects.filter(id=pk)
+            if token is None:
+                json = to_json([], request.path, 'Bad Token', '500')
+                return JsonResponse(json, safe=False)
+            art = Artwork.objects.filter(id=pk)
             like = Like.objects.filter(token=token).filter(artwork=pk)
             if like:
                 like.delete()
@@ -190,8 +197,26 @@ def removelike(request, pk):
                         'url': ''}
             else:
                 json = to_json([], request.path, 'Like not found', '404')
-        except artwork.DoesNotExist:
+        except Artwork.DoesNotExist:
             json = to_json([], request.path, 'Artwork not found', '404')
     else:
         json = to_json([], request.path, 'Bad method please use POST', '400')
+    return JsonResponse(json, safe=False)
+
+
+def getlikesbyartwork(request, pk):
+    try:
+        likes = Like.objects.filter(artwork=pk)
+        json = to_json(likes, request.path)
+    except Like.DoesNotExist:
+        json = to_json([], request.path, 'Like not found', '')
+    return JsonResponse(json, safe=False)
+
+
+def getlikesbytoken(request, pk):
+    try:
+        likes = Like.objects.filter(token=pk)
+        json = to_json(likes, request.path)
+    except Like.DoesNotExist:
+        json = to_json([], request.path, 'Like not found', '')
     return JsonResponse(json, safe=False)

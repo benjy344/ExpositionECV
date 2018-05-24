@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^artworks/(?P<pk>[0-9]+)/$', views.getartwork, name='search for an artworks from id'),
     url(r'^artworks/(?P<pk>[0-9]+)/addlike$', views.addlike, name='add a like on artwork with a token'),
     url(r'^artworks/(?P<pk>[0-9]+)/removelike', views.removelike, name='same as like but remove'),
+    url(r'^artworks/(?P<pk>[0-9]+)/likes', views.getlikesbyartwork, name='get all the like of an artwork'),
     url(r'^places/$', views.getallplaces, name='get all places'),
     url(r'^places/(?P<pk>[0-9]+)/$', views.getplace, name='get a place from an id'),
     url(r'^places/(?P<pk>[0-9]+)/map/$', views.getplacemap, name='get the map of the place'),
@@ -17,6 +18,7 @@ urlpatterns = [
     url(r'^places/(?P<pk>[0-9]+)/pages/$', views.getpageplace, name='get content for a place by his id'),
     url(r'^places/(?P<pk>[0-9]+)/pages/info$', views.getpageplaceinfos, name='get the content ofinfo for a place'),
     url(r'^places/(?P<pk>[0-9]+)/pages/home$', views.getpageplacehome, name='get the content of home for a place'),
+    url(r'^likes/(?P<pk>\D+)/$', views.getlikesbytoken, name='Get all likes for a token'),
 ]
 
 

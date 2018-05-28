@@ -152,7 +152,7 @@ def getallartworkbyparams(request):
 def addlike(request, pk):
     if request.method == 'POST':
         try:
-            token = request.META.get('Authorization')
+            token = request.META.get('HTTP_AUTHORIZATION')
             if token is None:
                 json = to_json([], request.path, 'Bad Token', '500')
                 return JsonResponse(json, safe=False)
@@ -181,7 +181,7 @@ def addlike(request, pk):
 def removelike(request, pk):
     if request.method == 'POST':
         try:
-            token = request.META.get('Authorization')
+            token = request.META.get('HTTP_AUTHORIZATION')
             if token is None:
                 json = to_json([], request.path, 'Bad Token', '500')
                 return JsonResponse(json, safe=False)

@@ -8,7 +8,7 @@ class artworkAdmin(admin.ModelAdmin):
         obj.save()
 
 
-admin.site.register(artwork,artworkAdmin)
+admin.site.register(Artwork, artworkAdmin)
 admin.site.register(Author)
 admin.site.register(Content)
 admin.site.register(Page)

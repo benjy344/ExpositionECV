@@ -1,3 +1,4 @@
+
 from io import StringIO, BytesIO
 
 import qrcode
@@ -14,7 +15,7 @@ def qrcode_location(filename):
     return 'qrcode/%s' % (filename)
 
 
-class artwork(models.Model):
+class Artwork(models.Model):
     name = models.TextField()
     desc = models.TextField()
     img = models.ImageField()
@@ -61,7 +62,7 @@ class artwork(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'artwork'
+        db_table = 'Artwork'
 
 
 class Author(models.Model):

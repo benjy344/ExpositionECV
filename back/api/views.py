@@ -11,6 +11,7 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 
+# Recupère tous les object de la classe Artwork
 def getallartworks(request):
     try:
         arts = Artwork.objects.all()
@@ -20,6 +21,7 @@ def getallartworks(request):
     return request_return(json)
 
 
+# Recupère tous les object de la classe Artwork qui ont l'id PK
 def getartwork(request, pk):
     try:
         art = Artwork.objects.filter(id=pk)
@@ -29,6 +31,7 @@ def getartwork(request, pk):
     return request_return(json)
 
 
+# Recupère tous les object de la classe Place
 def getallplaces(request):
     try:
         places = Place.objects.all()
@@ -46,6 +49,7 @@ def getplace(request, pk):
     return request_return(json)
 
 
+# Recupère la map d'une page qui est dans la table contenue (clé étrangère sur l'id de la pages)
 def getplacemap(request, pk):
     json = {}
     try:
@@ -79,6 +83,7 @@ def getroom(request, pk):
     return request_return(json)
 
 
+# Récuprere les oeuvres qui sont dans la salle avec l'id pk
 def getartworkbyroom(request, pk):
     try:
         artworks = Artwork.objects.filter(room=pk)
@@ -88,6 +93,7 @@ def getartworkbyroom(request, pk):
     return request_return(json)
 
 
+# Récuprere les contenue pour les pages d'une exposition (pk est l'id de l'exposition(place))
 def getpageplace(request, pk):
     json = {}
     try:
@@ -102,6 +108,7 @@ def getpageplace(request, pk):
     return request_return(json)
 
 
+# idem que audessus mais pour avoir seulement la page infos pratique
 def getpageplaceinfos(request, pk):
     json = {}
     try:
@@ -115,7 +122,7 @@ def getpageplaceinfos(request, pk):
         json = to_json([], request.path, 'Content not found', '')
     return request_return(json)
 
-
+# idem que audessus mais pour avoir seulement la page home
 def getpageplacehome(request, pk):
     json = {}
     try:
@@ -130,6 +137,8 @@ def getpageplacehome(request, pk):
     return request_return(json)
 
 
+# Permet de faire une recherche par rapport à un attribu de la table artwork sous la forme d'une URL
+# /api/artworks/search?name=Safe%20Place
 def getallartworkbyparams(request):
     json = {}
     if request.method == 'GET':
@@ -147,6 +156,8 @@ def getallartworkbyparams(request):
     return request_return(json)
 
 
+# method POST pour ajouter un like à une image avec un token passé via HTTP_AUTHORIZATION
+# le décorateur permet de ne pas avoir la validation de token crsf de django
 @method_decorator(csrf_exempt, name='dispatch')
 def addlike(request, pk):
     if request.method == 'POST':
@@ -176,6 +187,8 @@ def addlike(request, pk):
     return request_return(json, 'POST')
 
 
+# method POST pour retirer un like à une image avec un token passé via HTTP_AUTHORIZATION
+# le décorateur permet de ne pas avoir la validation de token crsf de django
 @method_decorator(csrf_exempt, name='dispatch')
 def removelike(request, pk):
     if request.method == 'POST':

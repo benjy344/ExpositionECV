@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'api',
-    'corsheaders'
+    'corsheaders',
+    'antispam',
 ]
 
 

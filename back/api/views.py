@@ -1,11 +1,10 @@
-from django.core import serializers
 from django.core.exceptions import FieldDoesNotExist
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Page, Content, Artwork, Place, Room, Author, Like
-from .utils import to_json
+from .utils import to_json, request_return
 
 
 def index(request):
@@ -18,13 +17,7 @@ def getallartworks(request):
         json = to_json(arts, request.path)
     except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artworks not found...', '')
-    response = JsonResponse(json, safe=False)
-    response["Access-Control-Allow-Origin"] = "localhost"
-    response["Access-Control-Allow-Methods"] = "GET"
-    response["Access-Control-Max-Age"] = "1000"
-    response["Access-Control-Allow-Headers"] = "*"
-    response['Cache-Control'] = 'max-age=10000'
-    return response
+    return request_return(json)
 
 
 def getartwork(request, pk):
@@ -33,7 +26,7 @@ def getartwork(request, pk):
         json = to_json(art, request.path)
     except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artwork not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getallplaces(request):
@@ -42,7 +35,7 @@ def getallplaces(request):
         json = to_json(places, request.path)
     except Place.DoesNotExist:
         json = to_json([], request.path, 'Place not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getplace(request, pk):
@@ -50,7 +43,7 @@ def getplace(request, pk):
         place = Place.objects.filter(id=pk)
     except Place.DoesNotExist:
         json = to_json([], request.path, 'Place not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getplacemap(request, pk):
@@ -65,7 +58,7 @@ def getplacemap(request, pk):
         json = to_json([], request.path, 'Page not found', '')
     except Content.DoesNotExist:
         json = to_json([], request.path, 'Content not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getallroomsbyplace(request, pk):
@@ -74,7 +67,7 @@ def getallroomsbyplace(request, pk):
         json = to_json(rooms, request.path)
     except Room.DoesNotExist:
         json = to_json([], request.path, 'Rooms not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getroom(request, pk):
@@ -83,7 +76,7 @@ def getroom(request, pk):
         json = to_json(rooms, request.path)
     except Room.DoesNotExist:
         json = to_json([], request.path, 'Rooms not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getartworkbyroom(request, pk):
@@ -92,7 +85,7 @@ def getartworkbyroom(request, pk):
         json = to_json(artworks, request.path)
     except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artworks not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getpageplace(request, pk):
@@ -106,7 +99,7 @@ def getpageplace(request, pk):
         json = to_json([], request.path, 'Page not found', '')
     except Content.DoesNotExist:
         json = to_json([], request.path, 'Content not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getpageplaceinfos(request, pk):
@@ -120,7 +113,7 @@ def getpageplaceinfos(request, pk):
         json = to_json([], request.path, 'Page not found', '')
     except Content.DoesNotExist:
         json = to_json([], request.path, 'Content not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getpageplacehome(request, pk):
@@ -134,7 +127,7 @@ def getpageplacehome(request, pk):
         json = to_json([], request.path, 'Page not found', '404')
     except Content.DoesNotExist:
         json = to_json([], request.path, 'Content not found', '404')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getallartworkbyparams(request):
@@ -151,7 +144,7 @@ def getallartworkbyparams(request):
             json = to_json([], request.path, 'Field not exist', '500')
     else:
         json = to_json([], request.path, 'Bad method please use GET', '400')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -161,7 +154,7 @@ def addlike(request, pk):
             token = request.META.get('HTTP_AUTHORIZATION')
             if token is None:
                 json = to_json([], request.path, 'Bad Token', '500')
-                return JsonResponse(json, safe=False)
+                return request_return(json)
             art = Artwork.objects.filter(id=pk)
             like = Like.objects.filter(token=token).filter(artwork=pk)
             if like:
@@ -180,7 +173,7 @@ def addlike(request, pk):
             json = to_json([], request.path, 'Artwork not found', '404')
     else:
         json = to_json([], request.path, 'Bad method please use POST', '400')
-    return JsonResponse(json, safe=False)
+    return request_return(json, 'POST')
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -190,7 +183,7 @@ def removelike(request, pk):
             token = request.META.get('HTTP_AUTHORIZATION')
             if token is None:
                 json = to_json([], request.path, 'Bad Token', '500')
-                return JsonResponse(json, safe=False)
+                return request_return(json)
             art = Artwork.objects.filter(id=pk)
             like = Like.objects.filter(token=token).filter(artwork=pk)
             if like:
@@ -207,7 +200,7 @@ def removelike(request, pk):
             json = to_json([], request.path, 'Artwork not found', '404')
     else:
         json = to_json([], request.path, 'Bad method please use POST', '400')
-    return JsonResponse(json, safe=False)
+    return request_return(json, 'POST')
 
 
 def getlikesbyartwork(request, pk):
@@ -216,7 +209,7 @@ def getlikesbyartwork(request, pk):
         json = to_json(likes, request.path)
     except Like.DoesNotExist:
         json = to_json([], request.path, 'Like not found', '404')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getlikesbytoken(request):
@@ -226,7 +219,7 @@ def getlikesbytoken(request):
         json = to_json(likes, request.path)
     except Like.DoesNotExist:
         json = to_json([], request.path, 'Like not found', '404')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getauthor(request, pk):
@@ -235,7 +228,7 @@ def getauthor(request, pk):
         json = to_json(art, request.path)
     except Author.DoesNotExist:
         json = to_json([], request.path, 'Artwork not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)
 
 
 def getallauthor(request):
@@ -244,4 +237,4 @@ def getallauthor(request):
         json = to_json(art, request.path)
     except Author.DoesNotExist:
         json = to_json([], request.path, 'Artwork not found', '')
-    return JsonResponse(json, safe=False)
+    return request_return(json)

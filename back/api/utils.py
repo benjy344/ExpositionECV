@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 
+
 # Fonction pour faire un json à partir d'une queryset ou d'une erreur
 def to_json(queryset, url='', err='', errcode=''):
     json = {'results': [],

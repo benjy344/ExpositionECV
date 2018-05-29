@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^places/(?P<pk>[0-9]+)/pages/$', views.getpageplace, name='get content for a place by his id'),
     url(r'^places/(?P<pk>[0-9]+)/pages/info$', views.getpageplaceinfos, name='get the content ofinfo for a place'),
     url(r'^places/(?P<pk>[0-9]+)/pages/home$', views.getpageplacehome, name='get the content of home for a place'),
-    url(r'^likes/(?P<pk>\D+)/$', views.getlikesbytoken, name='Get all likes for a token'),
+    url(r'^likes/token/$', views.getlikesbytoken, name='Get all likes for a token'),
 ]
 
 

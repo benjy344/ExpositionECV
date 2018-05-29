@@ -213,9 +213,10 @@ def getlikesbyartwork(request, pk):
     return JsonResponse(json, safe=False)
 
 
-def getlikesbytoken(request, pk):
+def getlikesbytoken(request):
     try:
-        likes = Like.objects.filter(token=pk)
+        token = request.META.get('HTTP_AUTHORIZATION')
+        likes = Like.objects.filter(token=token)
         json = to_json(likes, request.path)
     except Like.DoesNotExist:
         json = to_json([], request.path, 'Like not found', '')

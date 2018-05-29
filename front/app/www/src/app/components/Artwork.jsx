@@ -13,7 +13,7 @@ class ArtworkItem extends React.Component {
       artwork: {},
       author: {}
     }
-    fetch(`http://pitipoulpe.freeboxos.fr/api/artworks/${this.props.match.params.id}/` )
+    fetch(`http://pitipoulpe.freeboxos.fr/api/artworks/${this.props.match.params.id}` )
       .then( (response) => {
         if(!response.ok){
           this.setState({
@@ -35,7 +35,7 @@ class ArtworkItem extends React.Component {
   }
 
   getAuthor(id) {
-    fetch(`http://pitipoulpe.freeboxos.fr/api/authors/${id}/`)
+    fetch(`http://pitipoulpe.freeboxos.fr/api/authors/${id}`)
       .then(response => {
         if(!response.ok){
           this.setState({

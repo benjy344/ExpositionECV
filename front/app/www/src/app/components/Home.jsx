@@ -43,7 +43,7 @@ class Home extends React.Component {
   }
 
   getArtworks() {
-    fetch(`http://pitipoulpe.freeboxos.fr/api/artworks/` )
+    fetch(`http://pitipoulpe.freeboxos.fr/api/artworks` )
       .then( (response) => {
         if(!response.ok){
           this.setState({

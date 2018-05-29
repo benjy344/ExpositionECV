@@ -33,7 +33,7 @@ class Favorites extends React.Component {
   }
 
   getArwork(id) {
-    fetch(`http://pitipoulpe.freeboxos.fr/api/artworks/${id}/`)
+    fetch(`http://pitipoulpe.freeboxos.fr/api/artworks/${id}`)
       .then( (response) => {
         return response.json()
           .then(res => {

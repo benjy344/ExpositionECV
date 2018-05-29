@@ -19,10 +19,11 @@ def getallartworks(request):
     except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artworks not found...', '')
     response = JsonResponse(json, safe=False)
-    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Origin"] = "localhost"
     response["Access-Control-Allow-Methods"] = "GET"
     response["Access-Control-Max-Age"] = "1000"
     response["Access-Control-Allow-Headers"] = "*"
+    response['Cache-Control'] = 'max-age=10000'
     return response
 
 

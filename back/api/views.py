@@ -18,7 +18,12 @@ def getallartworks(request):
         json = to_json(arts, request.path)
     except Artwork.DoesNotExist:
         json = to_json([], request.path, 'Artworks not found...', '')
-    return JsonResponse(json, safe=False)
+    response = JsonResponse(json, safe=False)
+    response["Access-Control-Allow-Origin"] = "*"
+    response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    response["Access-Control-Max-Age"] = "1000"
+    response["Access-Control-Allow-Headers"] = "*"
+    return response
 
 
 def getartwork(request, pk):

@@ -1,0 +1,93 @@
+
+.unique-artwork-details {
+  position: relative;
+  top: 8vh;
+
+  .artwork-image {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    top: 2vh;
+  }
+  .artwork-details-caption {
+    position: absolute;
+    bottom: -30vh;
+    left: 0;
+    width: 92%;
+    height: 40vh;
+    color: white;
+    background: #26303e;
+    z-index: 1;
+
+    .artwork-map-number {
+      position: absolute;
+      top: 3%;
+      left: 3%;
+      font-size: 2rem;
+    }
+
+    .artwork-title-container {
+      position: absolute;
+      bottom: 10%;
+      left: 20%;
+
+      &::after {
+        content:"";
+        height: 1px;
+        width: 130%;
+        position: absolute;
+        background: white;
+        display: block;
+      }
+
+      .artwork-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0;
+      }
+      .artwork-artist {
+        margin: 2vh auto;
+        font-size: 1.2rem;
+      }
+
+      .artwork-line {
+        position: absolute;
+        bottom: 12%;
+        left: 20%;
+      }
+    }
+  }
+  .artwork-image-container {
+    overflow: hidden;
+    width: 68%;
+    height: 55vh;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+
+      img {
+        height: 100%;
+        object-fit: cover;
+      }
+
+
+    }
+  .artwork-description-container {
+    position: relative;
+    top: 38vh;
+    display: flex;
+    margin-bottom: 6vh;
+
+  }
+  .artwork-description-quote {
+    width: 10%;
+    margin: 0 auto;
+    font-size: 3rem;
+  }
+  .artwork-description {
+    padding: 0 10% 0 0;
+    width: 70%;
+  }
+}

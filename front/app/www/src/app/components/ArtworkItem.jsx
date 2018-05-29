@@ -65,7 +65,7 @@ class ArtworkItem extends React.Component {
     return (
       <li className={"artwork "}>
         <div className="artwork-image">
-          <Link to={`/artwork/${this.props.id}`}>
+          <Link to={`/artwork/${this.props.artwork.id}`}>
             <img src={'../../../img/'+this.props.artwork.img+'.jpeg'} alt={this.props.artwork.name} />
           </Link>
         </div>

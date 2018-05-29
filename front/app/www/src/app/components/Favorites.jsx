@@ -1,5 +1,6 @@
 import React from "react"
 import {connect} from "react-redux"
+import ArtworkItem from "./ArtworkItem"
 
 class Favorites extends React.Component {
   constructor(props) {
@@ -18,11 +19,12 @@ class Favorites extends React.Component {
 
     fetch(`http://pitipoulpe.freeboxos.fr/api/likes/token`, config)
       .then((response) => {
-        console.log(response)
         return response.json()
           .then((res) => {
-            this.setState({
-              artworks: res.results
+            const ids = res.results
+
+            ids.forEach( (art) => {
+              this.getArwork(art.artwork_id)
             })
           })
       }).catch((err) => console.log(err))
@@ -30,7 +32,24 @@ class Favorites extends React.Component {
 
   }
 
+  getArwork(id) {
+    fetch(`http://pitipoulpe.freeboxos.fr/api/artworks/${id}/`)
+      .then( (response) => {
+        return response.json()
+          .then(res => {
+            const artwork = res.results[0]
+            const old = this.state.artworks
+            old.push(artwork)
+            this.setState({
+              artworks: old
+            })
+          })
+        }
+      ).catch( (err) => console.log(err))
+  }
+
   render() {
+    console.log('=>'  ,this.state.artworks)
     return(
       <div>
         <div className="logo" >

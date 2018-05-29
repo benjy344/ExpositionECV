@@ -1,12 +1,9 @@
 
-from io import StringIO, BytesIO
 
 import qrcode
 import os
 from ckeditor.fields import RichTextField
 from django.core.files import File
-from django.core.files.images import ImageFile
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.conf import settings
 
@@ -34,6 +31,7 @@ class Artwork(models.Model):
     def __str__(self):
         return self.name
 
+    # créer un QRCODE par rapprot à l'id de l'oeuvre lors de sa création dans l'interface d'admin
     def generate_qrcode(self):
         qr = qrcode.QRCode(
             version=1,

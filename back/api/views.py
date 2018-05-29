@@ -209,15 +209,33 @@ def getlikesbyartwork(request, pk):
         likes = Like.objects.filter(artwork=pk)
         json = to_json(likes, request.path)
     except Like.DoesNotExist:
-        json = to_json([], request.path, 'Like not found', '')
+        json = to_json([], request.path, 'Like not found', '404')
     return JsonResponse(json, safe=False)
 
 
 def getlikesbytoken(request):
     try:
-        token = request.META.get('HTTP_AUTHORIZATION')
-        likes = Like.objects.filter(token=token)
+        t = request.META.get('HTTP_AUTHORIZATION')
+        likes = Like.objects.filter(token=t)
         json = to_json(likes, request.path)
     except Like.DoesNotExist:
-        json = to_json([], request.path, 'Like not found', '')
+        json = to_json([], request.path, 'Like not found', '404')
+    return JsonResponse(json, safe=False)
+
+
+def getauthor(request, pk):
+    try:
+        art = Author.objects.filter(id=pk)
+        json = to_json(art, request.path)
+    except Author.DoesNotExist:
+        json = to_json([], request.path, 'Artwork not found', '')
+    return JsonResponse(json, safe=False)
+
+
+def getallauthor(request):
+    try:
+        art = Author.objects.all()
+        json = to_json(art, request.path)
+    except Author.DoesNotExist:
+        json = to_json([], request.path, 'Artwork not found', '')
     return JsonResponse(json, safe=False)

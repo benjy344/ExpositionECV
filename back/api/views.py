@@ -20,7 +20,7 @@ def getallartworks(request):
         json = to_json([], request.path, 'Artworks not found...', '')
     response = JsonResponse(json, safe=False)
     response["Access-Control-Allow-Origin"] = "*"
-    response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    response["Access-Control-Allow-Methods"] = "GET"
     response["Access-Control-Max-Age"] = "1000"
     response["Access-Control-Allow-Headers"] = "*"
     return response

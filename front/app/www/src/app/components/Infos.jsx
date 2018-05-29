@@ -46,12 +46,16 @@ class Infos extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className={"infos"}>
+        <div className="logo" >
+          <img src="../../../img/logo.svg" alt="logo ecv" />
+        </div>
+        <h1 className={'sectionTitle'}>Informations Pratiques</h1>
         {this.state.errorMessage &&
         <span>{this.state.errorMessage}</span>
         }
         {this.state.content &&
-        <div dangerouslySetInnerHTML={this.createMarkup(this.state.content)} ></div>
+        <div className={'content-info'} dangerouslySetInnerHTML={this.createMarkup(this.state.content)} ></div>
         }
       </div>
     )
